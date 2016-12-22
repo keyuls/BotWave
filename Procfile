@@ -1,1 +1,1 @@
-web: python BotStash.py
+web: python BotWave.py
