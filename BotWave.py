@@ -15,7 +15,8 @@ def hello_world():
         api_key="521852823538172",
         api_secret="Exvv_UaBxdvPIT7XmjOTFFAmyXM"
     )
-    cloudinary.uploader.upload("rasa.png")
+    cloudinary.uploader.upload("chatbotjobs.png")
+    return ('', 204)
 
 if __name__ == '__main__':
     port = int(os.getenv('PORT', 5000))
