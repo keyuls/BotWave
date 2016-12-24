@@ -10,13 +10,13 @@ app = Flask(__name__)
 
 @app.route('/')
 def hello_world():
-    cloudinary.config(
+   ''' cloudinary.config(
         cloud_name="botsfloor",
         api_key="521852823538172",
         api_secret="Exvv_UaBxdvPIT7XmjOTFFAmyXM"
     )
     cloudinary.uploader.upload("chatbotjobs.png")
-    return ('', 204)
+    return ('', 204)'''
 
 if __name__ == '__main__':
     port = int(os.getenv('PORT', 5000))
