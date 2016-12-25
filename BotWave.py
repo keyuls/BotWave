@@ -35,6 +35,10 @@ def hello_world():
 def main():
     return render_template('signup.html')
 
+@app.route('/bots')
+def botDetails():
+    return render_template('botdetails.html')
+
 if __name__ == '__main__':
     port = int(os.getenv('PORT', 5000))
     #app.run(debug=False, port=port, host='0.0.0.0')
