@@ -2,11 +2,23 @@ import cloudinary
 import cloudinary.uploader
 import cloudinary.api
 
-from flask import Flask,render_template
 import os
+from flask import Flask , request , json , render_template , url_for
+
 
 app = Flask(__name__)
 
+@app.route('/signUp', methods=['POST'])
+def signUp():
+    _name = request.form['inputName']
+    _email = request.form['inputEmail']
+    _otherTools = request.form['inputOtherTools']
+    _botLink = request.form['inputBotLink']
+    return render_template('empty.html')
+    '''if _name and _email and _otherTools and _botLink:
+        return json.dumps({'html': '<span>All fields good !!</span>'})
+    else:
+     return json.dumps({'html': '<span>Enter the required fields</span>'})'''
 
 @app.route('/')
 def hello_world():
@@ -18,6 +30,10 @@ def hello_world():
     )
     cloudinary.uploader.upload("chatbotjobs.png")
     return ('', 204)'''
+
+@app.route('/submitstack')
+def main():
+    return render_template('signup.html')
 
 if __name__ == '__main__':
     port = int(os.getenv('PORT', 5000))
