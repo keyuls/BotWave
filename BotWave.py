@@ -12,8 +12,8 @@ app = Flask(__name__)
 def signUp():
     _name = request.form['inputName']
     _email = request.form['inputEmail']
-    _otherTools = request.form['inputOtherTools']
-    _botLink = request.form['inputBotLink']
+    _otherTools = request.form['otherTools']
+    _botLink = request.form['botLink']
     return render_template('empty.html')
     '''if _name and _email and _otherTools and _botLink:
         return json.dumps({'html': '<span>All fields good !!</span>'})
