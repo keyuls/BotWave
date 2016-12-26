@@ -3,32 +3,53 @@ import cloudinary.uploader
 import cloudinary.api
 
 import os
-from flask import Flask , request , json , render_template , url_for
+from flask import Flask , request  , render_template
+from flask_sqlalchemy import  SQLAlchemy
 
-
-app = Flask(__name__)
-
-@app.route('/signUp', methods=['POST'])
-def signUp():
-    _name = request.form['inputName']
-    _email = request.form['inputEmail']
-    _otherTools = request.form['otherTools']
-    _botLink = request.form['botLink']
-    return render_template('empty.html')
-    '''if _name and _email and _otherTools and _botLink:
-        return json.dumps({'html': '<span>All fields good !!</span>'})
-    else:
-     return json.dumps({'html': '<span>Enter the required fields</span>'})'''
-
-@app.route('/')
-def hello_world():
-    return render_template('index.html',data=12)
-    ''' cloudinary.config(
+#Configuring cloudinary
+cloudinary.config(
         cloud_name="botsfloor",
         api_key="521852823538172",
         api_secret="Exvv_UaBxdvPIT7XmjOTFFAmyXM"
     )
-    cloudinary.uploader.upload("chatbotjobs.png")
+
+app = Flask(__name__)
+
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://localhost:5432/postgres'
+db = SQLAlchemy(app)
+
+class botinfo(db.Model):
+    __tableName__ = "botinfo"
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String)
+    email = db.Column(db.String)
+    link = db.Column(db.String)
+    imagelink = db.Column(db.String)
+
+    def __init__(self,name,email,link,imageLink):
+        self.name = name
+        self.email= email
+        self.link = link
+        self.imagelink = imageLink
+
+@app.route('/signUp', methods=['POST'])
+def signUp():
+    botName = request.form['inputName']
+    botEmail = request.form['inputEmail']
+    otherTools = request.form['otherTools']
+    botLink = request.form['botLink']
+    botImage = request.files['botImage']
+    response = cloudinary.uploader.upload(botImage)
+    botImageURL = response['url']
+    bot = botinfo(botName,botEmail,botLink,botImageURL)
+    db.session.add(bot)
+    db.session.commit()
+    return render_template('signup.html')
+
+@app.route('/')
+def hello_world():
+    return render_template('index.html',data=12)
+    '''
     return ('', 204)'''
 
 @app.route('/submitstack')
