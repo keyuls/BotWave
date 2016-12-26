@@ -17,8 +17,10 @@ app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://localhost:5432/postgres'
 db = SQLAlchemy(app)
 
+toolsList =""
+
 class botinfo(db.Model):
-    __tableName__ = "botinfo"
+#    __tableName__ = "botinfo"
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String)
     email = db.Column(db.String)
@@ -31,19 +33,31 @@ class botinfo(db.Model):
         self.link = link
         self.imagelink = imageLink
 
+class tools(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String)
+
+    def __init__(self,name):
+        self.name= name
+
+
 @app.route('/signUp', methods=['POST'])
 def signUp():
     botName = request.form['inputName']
     botEmail = request.form['inputEmail']
     otherTools = request.form['otherTools']
     botLink = request.form['botLink']
+    for tool in request.form.getlist('toolNames'):
+        toolObj = tools(tool)
+        db.session.add(toolObj)
     botImage = request.files['botImage']
     response = cloudinary.uploader.upload(botImage)
     botImageURL = response['url']
     bot = botinfo(botName,botEmail,botLink,botImageURL)
     db.session.add(bot)
     db.session.commit()
-    return render_template('signup.html')
+    global  toolsList
+    return render_template('signup.html', toolsList=toolsList)
 
 @app.route('/')
 def hello_world():
@@ -53,7 +67,9 @@ def hello_world():
 
 @app.route('/submitstack')
 def main():
-    return render_template('signup.html')
+    global toolsList
+    toolsList = db.session.query(tools).all()
+    return render_template('signup.html',toolsList=toolsList)
 
 if __name__ == '__main__':
     port = int(os.getenv('PORT', 5000))
