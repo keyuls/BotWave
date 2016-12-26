@@ -14,7 +14,6 @@ cloudinary.config(
     )
 
 app = Flask(__name__)
-
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://localhost:5432/postgres'
 db = SQLAlchemy(app)
 
