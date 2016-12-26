@@ -39,6 +39,10 @@ def main():
 def botDetails():
     return render_template('botdetails.html')
 
+@app.route('/products')
+def productDetails():
+    return render_template('productdetails.html')
+
 if __name__ == '__main__':
     port = int(os.getenv('PORT', 5000))
     #app.run(debug=False, port=port, host='0.0.0.0')
