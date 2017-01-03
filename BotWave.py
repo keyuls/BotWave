@@ -21,8 +21,8 @@ def signUp():
      return json.dumps({'html': '<span>Enter the required fields</span>'})'''
 
 @app.route('/')
-def hello_world():
-    return render_template('index.html',data=12)
+def beta():
+    return render_template('beta.html')
     ''' cloudinary.config(
         cloud_name="botsfloor",
         api_key="521852823538172",
@@ -30,6 +30,10 @@ def hello_world():
     )
     cloudinary.uploader.upload("chatbotjobs.png")
     return ('', 204)'''
+
+@app.route('/homepage')
+def hello_world():
+    return render_template('index.html',data=12)
 
 @app.route('/submitstack')
 def main():
