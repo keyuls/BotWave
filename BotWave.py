@@ -71,6 +71,7 @@ def beta():
     cloudinary.uploader.upload("chatbotjobs.png")
     return ('', 204)'''
 
+
 @app.route('/homepage')
 def hello_world():
     return render_template('index.html',data=12)
