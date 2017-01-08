@@ -45,15 +45,20 @@ class bottool(db.Model):
 
 @app.route('/signUp', methods=['POST'])
 def signUp():
-    _name = request.form['inputName']
-    _email = request.form['inputEmail']
-    _otherTools = request.form['otherTools']
-    _botLink = request.form['botLink']
-    return render_template('empty.html')
-    '''if _name and _email and _otherTools and _botLink:
-        return json.dumps({'html': '<span>All fields good !!</span>'})
-    else:
-     return json.dumps({'html': '<span>Enter the required fields</span>'})'''
+    botName = request.form['inputName']
+    botDescription = request.form['inputDescription']
+    botLink = request.form['botLink']
+   # for tool in request.form.getlist('toolNames'):
+    #    toolObj = tools(tool)
+     #   db.session.add(toolObj)
+    botImage = request.files['botImage']
+    response = cloudinary.uploader.upload(botImage)
+    botImageURL = response['url']
+    botObj = bot(botName,botDescription,botLink,botImageURL)
+    db.session.add(botObj)
+    db.session.commit()
+    global  toolsList
+    return render_template('signup.html', toolsList=toolsList)
 
 @app.route('/')
 def beta():
