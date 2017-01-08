@@ -19,21 +19,22 @@ db = SQLAlchemy(app)
 
 toolsList =""
 
-class botinfo(db.Model):
+class bot(db.Model):
 #    __tableName__ = "botinfo"
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String)
-    email = db.Column(db.String)
-    link = db.Column(db.String)
+    description = db.Column(db.String)
+    verified = db.Column(db.Boolean)
     imagelink = db.Column(db.String)
+    link = db.Column(db.String)
 
-    def __init__(self,name,email,link,imageLink):
+    def __init__(self,name,description,link,imageLink):
         self.name = name
         self.email= email
         self.link = link
         self.imagelink = imageLink
 
-class tools(db.Model):
+class bottool(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String)
 
@@ -44,17 +45,17 @@ class tools(db.Model):
 @app.route('/signUp', methods=['POST'])
 def signUp():
     botName = request.form['inputName']
-    botEmail = request.form['inputEmail']
-    otherTools = request.form['otherTools']
+    botDescription = request.form['inputDescription']
+   # otherTools = request.form['otherTools']
     botLink = request.form['botLink']
-    for tool in request.form.getlist('toolNames'):
-        toolObj = tools(tool)
-        db.session.add(toolObj)
+   # for tool in request.form.getlist('toolNames'):
+    #    toolObj = tools(tool)
+     #   db.session.add(toolObj)
     botImage = request.files['botImage']
     response = cloudinary.uploader.upload(botImage)
     botImageURL = response['url']
-    bot = botinfo(botName,botEmail,botLink,botImageURL)
-    db.session.add(bot)
+    botObj = bot(botName,botDescription,botLink,botImageURL)
+    db.session.add(botObj)
     db.session.commit()
     global  toolsList
     return render_template('signup.html', toolsList=toolsList)
@@ -68,10 +69,10 @@ def hello_world():
 @app.route('/submitstack')
 def main():
     global toolsList
-    toolsList = db.session.query(tools).all()
+    toolsList = db.session.query(bottool).all()
     return render_template('signup.html',toolsList=toolsList)
 
 if __name__ == '__main__':
     port = int(os.getenv('PORT', 5000))
-    #app.run(debug=False, port=port, host='0.0.0.0')
-    app.run(debug=False, port=port, host='127.0.0.1')
+    app.run(debug=False, port=port, host='0.0.0.0')
+    #app.run(debug=False, port=port, host='127.0.0.1')
