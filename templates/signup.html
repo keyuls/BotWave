@@ -38,7 +38,8 @@
         <input type="text" name="otherTools" id="inputOtherTools" required autofocus><br><br>-->
         <label for="inputBotLink" >Bot Link</label>
         <input type="url" name="botLink" id="inputBotLink" required autofocus><br><br>
-        <input type="file" accept="image/*" name="botImage" required autofocus><br>
+        <label for="botImage">Bot Image</label>
+        <input type="file" accept="image/*" name="botImage" id="botImage" required autofocus><br>
         {% for tool in toolsList %}
         <label><input type="checkbox"  name="toolNames" value="{{tool.name}}"/>{{tool.name}}</label><br>
         {% endfor %}
