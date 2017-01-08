@@ -30,7 +30,7 @@ class bot(db.Model):
 
     def __init__(self,name,description,link,imageLink):
         self.name = name
-        self.email= email
+        self.description= description
         self.link = link
         self.imagelink = imageLink
 
